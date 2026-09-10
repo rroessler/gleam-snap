@@ -1,0 +1,26 @@
+name: Build Snaps
+on: [workflow_dispatch, workflow_call]
+
+jobs:
+    snap-build:
+        name: Build '${{ matrix.arch.name }}' Snap
+        runs-on: ${{ matrix.arch.runs-on }}
+
+        strategy:
+            matrix:
+                arch:
+                    - { name: amd64, runs-on: ubuntu-latest }
+                    - { name: arm64, runs-on: ubuntu-24.04-arm }
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v7
+            - name: Snapcore Build
+              id: gleam-build
+              uses: snapcore/action-build@v1
+            - name: Upload Artifacts
+              id: upload-artifact
+              uses: actions/upload-artifact@v7
+              with:
+                  name: gleam-snap-${{ matrix.arch.name }}
+                  path: ${{ steps.gleam-build.outputs.snap }}

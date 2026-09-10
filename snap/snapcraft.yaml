@@ -1,0 +1,45 @@
+name: gleam
+adopt-info: gleam
+summary: Gleam Programming Language
+description: |
+    Gleam is a friendly language for building type-safe systems that
+    scale! For more information see [the website](https://gleam.run)
+
+title: Gleam
+license: Apache-2.0
+contact: rroesslerio@gmail.com
+website: https://gleam.run
+source-code:
+    - https://github.com/gleam-lang/gleam
+    - https://github.com/rroessler/gleam-snap
+issues:
+    - https://github.com/gleam-lang/gleam/issues
+    - https://github.com/rroessler/gleam-snap/issues
+
+base: core26
+grade: stable
+confinement: classic
+
+platforms:
+    amd64:
+    arm64:
+
+apps:
+    gleam:
+        command: bin/gleam
+
+parts:
+    gleam:
+        plugin: nil
+        source-type: tar
+        source:
+            - on amd64: https://github.com/gleam-lang/gleam/releases/download/v1.18.1/gleam-v1.18.1-x86_64-unknown-linux-musl.tar.gz
+            - on arm64: https://github.com/gleam-lang/gleam/releases/download/v1.18.1/gleam-v1.18.1-aarch64-unknown-linux-musl.tar.gz
+        override-build: |
+            version=$($SNAPCRAFT_PART_SRC/gleam -V | awk '/gleam/{print $2}')
+
+            craftctl set version=$version
+            craftctl default
+
+            mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+            mv $SNAPCRAFT_PART_BUILD/gleam $SNAPCRAFT_PART_INSTALL/bin/gleam

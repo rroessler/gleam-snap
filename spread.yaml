@@ -1,0 +1,14 @@
+project: gleam
+
+backends:
+    lxd:
+        systems:
+            - ubuntu-24.04
+            - ubuntu-26.04
+
+suites:
+    tests/:
+        summary: Integration tests for the snap
+
+prepare: sudo snap install "$(ls *.snap | head -n 1)" --classic --dangerous
+restore: sudo snap remove gleam

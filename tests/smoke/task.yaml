@@ -1,0 +1,5 @@
+summary: Check 'gleam' binary is installed
+
+execute: |
+    set -ex
+    gleam --version | grep gleam
