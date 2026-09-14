@@ -1,0 +1,27 @@
+name: Spread Tests
+
+on:
+    pull_request:
+    workflow_dispatch:
+    push: { branches: [main] }
+
+jobs:
+    tests-spread:
+        name: Test 'gleam-snap-${{ matrix.arch.name }}' Snap
+        runs-on: ${{ matrix.arch.runs-on }}
+
+        strategy:
+            matrix:
+                arch:
+                    - { name: amd64, runs-on: ubuntu-latest }
+                    - { name: arm64, runs-on: ubuntu-24.04-arm }
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v7
+            - name: Snapcraft Build
+              uses: canonical/action-build@v1
+            - name: Run Spread Tests
+              run: |
+                  echo -e "\npath: /user/home" | tee -a spread.yaml > /dev/null # hide output
+                  sudo -u $USER -E /snap/snapcraft/current/libexec/snapcraft/craft.spread lxd -vv
