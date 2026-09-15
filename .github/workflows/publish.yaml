@@ -1,12 +1,12 @@
 name: Publish Snaps
 
 on:
-    push: { tags: ['release/**'] }
+    push: { tags: ["release/**"] }
     workflow_dispatch:
         inputs:
             override-release:
                 type: string
-                default: ''
+                default: ""
                 description: Manually configure a release value for the snap
 
 jobs:
@@ -35,8 +35,8 @@ jobs:
                   ARTIFACT_PATH="${{ steps.download-artifact.outputs.download-path }}"
                   SNAP_PATH=$(ls $ARTIFACT_PATH/gleam*.snap)
                   SNAP_VERSION=$(basename $SNAP_PATH | cut -d'_' -f2)
-                  SNAP_TRACK=$($SNAP_VERSION | grep -q "rc" && echo "candidate" || echo "stable")
-                  SNAP_RELEASE="$($SNAP_VERSION | cut -d'.' -f1,2)/$SNAP_TRACK"
+                  SNAP_TRACK=$(echo $SNAP_VERSION | grep -q "rc" && echo "candidate" || echo "stable")
+                  SNAP_RELEASE="$(echo $SNAP_VERSION | cut -d'.' -f1,2)/$SNAP_TRACK"
 
                   echo "snap-path=$SNAP_PATH" >> "$GITHUB_OUTPUT"
                   echo "snap-version=$SNAP_VERSION" >> "$GITHUB_OUTPUT"
