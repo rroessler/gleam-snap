@@ -1,0 +1,46 @@
+name: Publish Snaps
+
+on:
+    workflow_dispatch:
+    push: { tags: ['release/**'] }
+
+jobs:
+    publish-build:
+        name: Build Snaps
+        uses: ./.github/workflows/builder.yaml
+
+    publish-snap:
+        runs-on: ubuntu-latest
+        needs: [publish-build]
+        name: Publish 'gleam-snap-${{ matrix.arch }}' Snap
+
+        strategy:
+            matrix:
+                arch: [amd64, arm64]
+
+        steps:
+            - name: Download Artifacts
+              uses: actions/download-artifact@v7
+              id: download-artifact
+              with:
+                  name: gleam-snap-${{ matrix.arch }}
+            - name: Resolve Details
+              id: gleam-details
+              run: |
+                  ARTIFACT_PATH="${{ steps.download-artifact.outputs.download-path }}"
+                  SNAP_PATH=$(ls $ARTIFACT_PATH/gleam*.snap)
+                  SNAP_VERSION=$(basename $SNAP_PATH | cut -d'_' -f2)
+                  SNAP_TRACK=$($SNAP_VERSION | grep -q "rc" && echo "candidate" || echo "stable")
+                  SNAP_RELEASE="$(SNAP_VERSION | cut -d'.' -f1,2)/$SNAP_TRACK"
+
+                  echo "snap-path=$SNAP_PATH" >> "$GITHUB_OUTPUT"
+                  echo "snap-version=$SNAP_VERSION" >> "$GITHUB_OUTPUT"
+                  echo "snap-release=$SNAP_RELEASE" >> "$GITHUB_OUTPUT"
+
+            - name: Publish Snap
+              uses: canonical/action-publish@v1
+              env:
+                  SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAP_STORE_LOGIN }}
+              with:
+                  snap: ${{ steps.gleam-details.outputs.snap-path }}
+                  release: ${{ steps.gleam-details.outputs.snap-release }}
