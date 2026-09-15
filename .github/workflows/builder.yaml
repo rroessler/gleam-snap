@@ -2,7 +2,7 @@ name: Build Snaps
 on: [workflow_dispatch, workflow_call]
 
 jobs:
-    snap-build:
+    build-snap:
         name: Build 'gleam-snap-${{ matrix.arch.name }}' Snap
         runs-on: ${{ matrix.arch.runs-on }}
 

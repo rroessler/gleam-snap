@@ -1,0 +1,8 @@
+summary: Run a 'Hello, World!' application
+
+prepare: |
+    apt-get update -y && apt-get install -y erlang-dev rebar3
+
+execute: |
+    set -ex
+    gleam run | grep 'Hello, World!'

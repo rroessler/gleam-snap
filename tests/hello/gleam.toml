@@ -1,0 +1,5 @@
+name = "hello_world"
+tool = "other"
+
+[dependencies]
+gleam_stdlib = ">= 1.0.5 and < 2.0.0"

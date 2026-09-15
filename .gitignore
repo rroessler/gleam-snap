@@ -3,3 +3,6 @@
 /stage/
 /prime/
 *.snap
+
+# Gleam Outputs
+build/

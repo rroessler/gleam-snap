@@ -3,7 +3,6 @@ project: gleam
 backends:
     lxd:
         systems:
-            - ubuntu-24.04
             - ubuntu-26.04
 
 suites:
