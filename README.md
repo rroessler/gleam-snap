@@ -8,7 +8,7 @@
     <br />
     <br />
     <a href="https://snapcraft.io/gleam">
-        <img src="https://snapcraft.io/gleam.badge.svg">
+        <img src="https://snapcraft.io/gleam/badge.svg">
     </a>
 </p>
 
