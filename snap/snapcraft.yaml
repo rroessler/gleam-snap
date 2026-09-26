@@ -37,11 +37,11 @@ parts:
         plugin: nil
         source-type: tar
         source-checksum:
-            - on amd64: sha256/d98f802176617f84b150bf1873fe877336bb11420789788cca35ec633da3c457
-            - on arm64: sha256/f94b043c5ff3541bd9b9635f79dfaa569953ce984c6184ab71ef8877d094d4f9
+            - on amd64: sha256/dd4685bac116e8183946a7b5604d35da32f482fae6ab567abefa073a41294c9c
+            - on arm64: sha256/708c921dabaf6488efd6852dddba2c027630dca1ff13d6d0739b29ab5e4cc977
         source:
-            - on amd64: https://github.com/gleam-lang/gleam/releases/download/v1.19.0-rc1/gleam-v1.19.0-rc1-x86_64-unknown-linux-musl.tar.gz
-            - on arm64: https://github.com/gleam-lang/gleam/releases/download/v1.19.0-rc1/gleam-v1.19.0-rc1-aarch64-unknown-linux-musl.tar.gz
+            - on amd64: https://github.com/gleam-lang/gleam/releases/download/v1.19.0-rc2/gleam-v1.19.0-rc2-x86_64-unknown-linux-musl.tar.gz
+            - on arm64: https://github.com/gleam-lang/gleam/releases/download/v1.19.0-rc2/gleam-v1.19.0-rc2-aarch64-unknown-linux-musl.tar.gz
         override-build: |
             version=$($SNAPCRAFT_PART_SRC/gleam -V | awk '/gleam/{print $2}')
 
